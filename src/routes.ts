@@ -1,4 +1,5 @@
 import Home from 'screens/Home';
+import Scanner from 'screens/Scanner';
 
 export type Route = {
   name: string;
@@ -9,6 +10,10 @@ const routes = [
   {
     name: 'Home',
     page: Home,
+  },
+  {
+    name: 'Scanner',
+    page: Scanner,
   },
 ];
 
