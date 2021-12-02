@@ -1,3 +1,4 @@
+import Components from 'screens/Components';
 import Home from 'screens/Home';
 import Scanner from 'screens/Scanner';
 
@@ -14,6 +15,10 @@ const routes = [
   {
     name: 'Scanner',
     page: Scanner,
+  },
+  {
+    name: 'Components',
+    page: Components,
   },
 ];
 

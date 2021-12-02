@@ -24,7 +24,7 @@ const App = () => {
             headerShown: false,
             gestureEnabled: false,
           }}
-          initialRouteName="Scanner">
+          initialRouteName="Components">
           {routes.map((route, index) => (
             <Stack.Screen
               key={`route-${route.name}-${index}`}
