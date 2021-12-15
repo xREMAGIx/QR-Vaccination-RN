@@ -9,6 +9,22 @@ import {Wrapper} from 'components/atoms/Wrapper';
 import {Textfield} from 'components/atoms/Textfield';
 import {Image} from 'components/atoms/Image';
 import {Icon} from 'components/atoms/Icon';
+import {Pulldown} from 'components/molecules/Pulldown';
+
+const pulldownData = [
+  {
+    label: 'a',
+    value: 'a',
+  },
+  {
+    label: 'b',
+    value: 'b',
+  },
+  {
+    label: 'c',
+    value: 'c',
+  },
+];
 
 const Components: React.FC = () => {
   return (
@@ -37,6 +53,9 @@ const Components: React.FC = () => {
         </Wrapper>
         <Wrapper mTop={8}>
           <Icon iconName="qr" />
+        </Wrapper>
+        <Wrapper mTop={8}>
+          <Pulldown label="Vệ sinh và sát trùng" data={pulldownData} />
         </Wrapper>
       </ScrollView>
     </SafeAreaView>

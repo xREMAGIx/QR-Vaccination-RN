@@ -1,9 +1,13 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import qr from 'assets/icons/ic_qr.png';
+import arrowDown from 'assets/icons/ic_arrow_down.png';
+import disabled from 'assets/icons/ic_disabled.png';
 
 export const IconList = {
   qr,
+  arrowDown,
+  disabled,
 };
 
 export type IconName = keyof typeof IconList;
