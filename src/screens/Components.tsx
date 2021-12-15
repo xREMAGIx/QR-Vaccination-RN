@@ -10,6 +10,7 @@ import {Textfield} from 'components/atoms/Textfield';
 import {Image} from 'components/atoms/Image';
 import {Icon} from 'components/atoms/Icon';
 import {Pulldown} from 'components/molecules/Pulldown';
+import {MenuItem} from 'components/molecules/MenuItem';
 
 const pulldownData = [
   {
@@ -56,6 +57,16 @@ const Components: React.FC = () => {
         </Wrapper>
         <Wrapper mTop={8}>
           <Pulldown label="Vệ sinh và sát trùng" data={pulldownData} />
+        </Wrapper>
+        <Wrapper mTop={8}>
+          <MenuItem
+            iconName="qr"
+            size={40}
+            handlePress={() => {
+              console.log('aaaa');
+            }}>
+            QR
+          </MenuItem>
         </Wrapper>
       </ScrollView>
     </SafeAreaView>
