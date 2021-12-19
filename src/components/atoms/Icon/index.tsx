@@ -9,6 +9,7 @@ import userSpanishBlue from 'assets/icons/ic_user-spanishBlue.png';
 import userOxfordBlue from 'assets/icons/ic_user-oxfordBlue.png';
 import arrowPrevBlack from 'assets/icons/ic_arrow_prev-black.png';
 import arrowPrevWhite from 'assets/icons/ic_arrow_prev-white.png';
+import lockDavysGrey from 'assets/icons/ic_lock-davysGrey.png';
 
 export const IconList = {
   qr,
@@ -20,6 +21,7 @@ export const IconList = {
   userOxfordBlue,
   arrowPrevBlack,
   arrowPrevWhite,
+  lockDavysGrey,
 };
 
 export type IconName = keyof typeof IconList;

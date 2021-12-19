@@ -155,6 +155,7 @@ const TextfieldRef: React.ForwardRefRenderFunction<any, TextFieldProps> = (
     handleSubmit,
     handleIconRight,
     handleClick,
+    error,
     ...props
   },
   ref,
@@ -232,6 +233,13 @@ const TextfieldRef: React.ForwardRefRenderFunction<any, TextFieldProps> = (
           </IconRight>
         )}
       </Wrapper>
+      {error && (
+        <ErrorWrapper>
+          <Text fs={10} color="engineering">
+            {error}
+          </Text>
+        </ErrorWrapper>
+      )}
     </Container>
   );
 };
@@ -342,6 +350,10 @@ const Wrapper = styled.View<WrapperProps>`
       padding-left: 20px;
       padding-right: 70px;
   `}
+`;
+
+const ErrorWrapper = styled.View`
+  margin-top: 4px;
 `;
 
 const Input = styled.TextInput<InputTextFieldProps>`
