@@ -2,6 +2,7 @@ import Components from 'screens/Components';
 import Home from 'screens/Home';
 import Scanner from 'screens/Scanner';
 import SignIn from 'screens/SignIn';
+import SignUp from 'screens/SignUp';
 
 export type Route = {
   name: string;
@@ -24,6 +25,10 @@ const routes = [
   {
     name: 'SignIn',
     page: SignIn,
+  },
+  {
+    name: 'SignUp',
+    page: SignUp,
   },
 ];
 

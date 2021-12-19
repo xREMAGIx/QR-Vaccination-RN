@@ -16,16 +16,18 @@ const SignIn: React.FC = () => {
   const navigation = useNavigation();
   const [isSecurity, setIsSecurity] = useState(true);
 
-  const formControls = useForm<SignInFormData>({
+  const {reset, control, handleSubmit} = useForm<SignInFormData>({
     resolver: yupResolver(SigninSchema),
   });
 
   const handleSignin = async (data: SignInFormData) => {
     console.log(data);
+    reset();
     navigation.navigate('Home');
   };
 
   const handleSignUp = () => {
+    reset();
     navigation.navigate('SignUp');
   };
 
@@ -39,7 +41,7 @@ const SignIn: React.FC = () => {
         </Wrapper>
         <Wrapper mTop={16}>
           <Controller
-            control={formControls.control}
+            control={control}
             name="username"
             render={({field: {onChange, value}, fieldState: {error}}) => (
               <Textfield
@@ -56,7 +58,7 @@ const SignIn: React.FC = () => {
         </Wrapper>
         <Wrapper mTop={16}>
           <Controller
-            control={formControls.control}
+            control={control}
             name="password"
             render={({field: {onChange, value}, fieldState: {error}}) => (
               <Textfield
@@ -66,7 +68,7 @@ const SignIn: React.FC = () => {
                 isSecurity={isSecurity}
                 handleChange={onChange}
                 value={value}
-                handleSubmit={formControls.handleSubmit(handleSignin)}
+                handleSubmit={handleSubmit(handleSignin)}
                 iconRight="lockDavysGrey"
                 handleIconRight={() => {
                   setIsSecurity(!isSecurity);
@@ -81,7 +83,7 @@ const SignIn: React.FC = () => {
           <Flex>
             <Flex flexNum={1}>
               <ButtonView>
-                <Button handlePress={formControls.handleSubmit(handleSignin)}>
+                <Button handlePress={handleSubmit(handleSignin)}>
                   Đăng nhập
                 </Button>
               </ButtonView>
