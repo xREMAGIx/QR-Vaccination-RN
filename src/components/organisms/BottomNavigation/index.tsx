@@ -5,6 +5,7 @@ import {Icon} from 'components/atoms/Icon';
 import {Text} from 'components/atoms/Text';
 import Home from 'screens/Home';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import User from 'screens/User';
 
 export const BottomNavigation: React.FC = () => {
   const Tab = createBottomTabNavigator();
@@ -13,8 +14,9 @@ export const BottomNavigation: React.FC = () => {
   return (
     <Tab.Navigator
       initialRouteName="HomeNav"
-      tabBarOptions={{
-        style: {
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
           backgroundColor: colors.white,
           paddingTop: 8,
           paddingBottom: Math.max(insets.bottom, 12),
@@ -37,14 +39,14 @@ export const BottomNavigation: React.FC = () => {
               fw="regular"
               color={focused ? 'blueSapphire' : 'pastelGray'}
               opacity={focused ? 1 : 0.5}>
-              Home
+              Trang chủ
             </Text>
           ),
         }}
       />
       <Tab.Screen
-        name="Account"
-        component={Home}
+        name="User"
+        component={User}
         options={{
           tabBarIcon: ({focused}) => (
             <Icon
@@ -58,7 +60,7 @@ export const BottomNavigation: React.FC = () => {
               fw="regular"
               color={focused ? 'blueSapphire' : 'pastelGray'}
               opacity={focused ? 1 : 0.5}>
-              User
+              Người dùng
             </Text>
           ),
         }}

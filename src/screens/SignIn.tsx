@@ -23,7 +23,7 @@ const SignIn: React.FC = () => {
   const handleSignin = async (data: SignInFormData) => {
     console.log(data);
     reset();
-    navigation.navigate('Home');
+    navigation.navigate('MainNav');
   };
 
   const handleSignUp = () => {

@@ -1,3 +1,4 @@
+import MainNav from 'navigators/MainNav';
 import Components from 'screens/Components';
 import Home from 'screens/Home';
 import Scanner from 'screens/Scanner';
@@ -29,6 +30,10 @@ const routes = [
   {
     name: 'SignUp',
     page: SignUp,
+  },
+  {
+    name: 'MainNav',
+    page: MainNav,
   },
 ];
 
