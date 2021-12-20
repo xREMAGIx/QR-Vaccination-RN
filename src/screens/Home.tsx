@@ -1,19 +1,77 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import {HeadBar} from 'components/organisms/HeadBar';
 import colors from 'variables/colors';
-import QRCode from 'react-native-qrcode-svg';
+import {ScrollView} from 'react-native-gesture-handler';
+import {Flex} from 'components/atoms/Wrapper';
+import {MenuItem} from 'components/molecules/MenuItem';
+import {Dimensions} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {IconName} from 'components/atoms/Icon';
+
+type ItemData = {
+  iconName: IconName;
+  title: string;
+  screen: string;
+  iconSize?: number;
+};
+
+const pageData: ItemData[] = [
+  {
+    iconName: 'qr',
+    title: 'Đăng ký tiêm vaccine',
+    screen: 'Scanner',
+    iconSize: 44,
+  },
+];
+
+const menuItemWidth = Dimensions.get('window').width / 3 - 16;
 
 const Home: React.FC = () => {
+  const navigation = useNavigation();
+
   return (
-    <SafeAreaView>
-      <QRCode value="http://awesome.link.qr" />
-    </SafeAreaView>
+    <Container>
+      <HeadBar isWhiteTheme withSafe>
+        Trang chủ
+      </HeadBar>
+      <ScrollView>
+        <ListMenuContainer>
+          <Flex isWrap alignItems="stretch" justifyContent="flex-start">
+            {pageData.map((item, index) => (
+              <MenuItemContainer
+                alignItems="stretch"
+                justifyContent="space-between"
+                basis={`${menuItemWidth}px`}
+                key={`${item.title}-${index}`}>
+                <MenuItem
+                  iconName={item.iconName}
+                  size={item.iconSize || 60}
+                  handlePress={() => {
+                    navigation.navigate(item.screen);
+                  }}>
+                  {item.title}
+                </MenuItem>
+              </MenuItemContainer>
+            ))}
+          </Flex>
+        </ListMenuContainer>
+      </ScrollView>
+    </Container>
   );
 };
 
-const SafeAreaView = styled.SafeAreaView`
+const Container = styled.View`
   flex: 1;
-  background-color: ${colors.white};
+  background: ${colors.aliceBlue};
+`;
+
+const ListMenuContainer = styled.View`
+  padding: 8px 12px;
+`;
+
+const MenuItemContainer = styled(Flex)`
+  margin: 4px;
 `;
 
 export default Home;
