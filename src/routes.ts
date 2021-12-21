@@ -1,4 +1,5 @@
 import MainNav from 'navigators/MainNav';
+import {RegistrationNav} from 'navigators/RegistrationNav';
 import Components from 'screens/Components';
 import Home from 'screens/Home';
 import Scanner from 'screens/Scanner';
@@ -34,6 +35,10 @@ const routes = [
   {
     name: 'MainNav',
     page: MainNav,
+  },
+  {
+    name: 'RegistrationNav',
+    page: RegistrationNav,
   },
 ];
 

@@ -34,7 +34,6 @@ export type TextFieldContentProps = {
   borderWidth?: number;
   color?: Colors;
   bgColor?: Colors;
-  withEmoji?: boolean;
   bgOpacity?: number;
   borderRadius?: number;
 };
@@ -51,7 +50,6 @@ type WrapperProps = Pick<
   | 'borderWidth'
   | 'fs'
   | 'height'
-  | 'withEmoji'
   | 'bgOpacity'
   | 'borderRadius'
 >;
@@ -142,7 +140,6 @@ const TextfieldRef: React.ForwardRefRenderFunction<any, TextFieldProps> = (
     focused,
     keyboardType,
     maxDigit,
-    withEmoji,
     postionMaxLenghth = 'top',
     iconSearch,
     iconRight,
@@ -180,8 +177,7 @@ const TextfieldRef: React.ForwardRefRenderFunction<any, TextFieldProps> = (
         bgOpacity={bgOpacity}
         borderColor={borderColor}
         borderWidth={borderWidth}
-        borderRadius={borderRadius}
-        withEmoji={withEmoji}>
+        borderRadius={borderRadius}>
         {iconSearch && (
           <SearchIconView>
             <Icon iconName={iconSearch} size={20} />
@@ -343,13 +339,6 @@ const Wrapper = styled.View<WrapperProps>`
     ` border: ${props.borderWidth || 1}px solid ${colors[props.borderColor]}`};
   border-radius: ${props => props.borderRadius || 4}px;
   flex-grow: 1;
-  ${props =>
-    props.withEmoji &&
-    `
-      border-radius: 50px;
-      padding-left: 20px;
-      padding-right: 70px;
-  `}
 `;
 
 const ErrorWrapper = styled.View`

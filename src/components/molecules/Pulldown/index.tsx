@@ -86,7 +86,7 @@ export const Pulldown: React.FC<Props> = ({
   return (
     <Container>
       {label && (
-        <Label fs={selectedValue ? 12 : 16} isFocused={!!selectedValue}>
+        <Label fs={14} isFocused={!!selectedValue}>
           {label}
         </Label>
       )}
@@ -178,22 +178,24 @@ const Container = styled.View`
 `;
 
 const Label = styled(Text)<{isFocused?: boolean}>`
-  color: ${props =>
-    props.isFocused ? colorsAlpha('black', 0.87) : colors.black};
+  color: ${colors.blueSapphire};
 `;
 
 const PickerWrapper = styled.View<{pressed?: boolean}>`
-  margin-top: 22px;
+  margin-top: 8px;
   margin-bottom: 6px;
   flex-direction: row;
   align-items: center;
   height: ${Platform.OS === 'ios' ? 36 : 40}px
   border: 1px solid ${colors.blueSapphire}
     ${props => props.pressed && 'opacity: 0.7'};
+  border-radius: 4px;
 `;
 
 const TextWrapper = styled.View<{disabled?: boolean}>`
   flex: 1;
+  padding-left: 8px;
+  padding-right: 8px;
   /* ${props => props.disabled && ' opacity: 0.24'}; */
 `;
 

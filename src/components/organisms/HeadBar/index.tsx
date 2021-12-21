@@ -64,7 +64,7 @@ export const HeadBar: React.FC<Props> = ({
         <TitleContainer grow={1} isColumn alignItems="stretch">
           <Wrapper mLeft={isWhiteTheme ? -24 : 12}>
             <Text
-              color={isWhiteTheme ? 'white' : 'blueSapphire'}
+              color={isWhiteTheme ? 'white' : 'raisinBlack'}
               fs={21}
               lh={32}
               fw="medium"

@@ -1,10 +1,18 @@
 import React, {Fragment, useRef, useState} from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import {TouchableOpacity, Text, StatusBar, Linking, View} from 'react-native';
+import {TouchableOpacity, Linking, View} from 'react-native';
 import {BarCodeReadEvent} from 'react-native-camera';
+import styled from 'styled-components/native';
+import {Icon} from 'components/atoms/Icon';
+import {Wrapper} from 'components/atoms/Wrapper';
+import {Button} from 'components/atoms/Button';
+import {Text} from 'components/atoms/Text';
+import {useNavigation} from '@react-navigation/native';
 
 const Scanner: React.FC = () => {
-  const [scan, setScan] = useState(false);
+  const navigation = useNavigation();
+
+  const [scan, setScan] = useState(true);
   const [scanResult, setScanResult] = useState(false);
   const [result, setResult] = useState<BarCodeReadEvent>();
 
@@ -26,28 +34,25 @@ const Scanner: React.FC = () => {
     }
   };
 
-  const activeQR = () => {
-    setScan(true);
-  };
-
   const scanAgain = () => {
     setScan(true);
     setScanResult(false);
+    scanner.current?.reactivate();
+  };
+
+  const handleContinue = () => {
+    setScan(false);
+    navigation.navigate('RegistrationNav');
+  };
+
+  const handleBack = () => {
+    setScan(false);
+    navigation.navigate('MainNav');
   };
 
   return (
-    <View>
+    <Container>
       <Fragment>
-        <StatusBar barStyle="dark-content" />
-        <Text>Welcome To React-Native QR Code Tutorial !</Text>
-        {!scan && !scanResult && (
-          <View>
-            <TouchableOpacity onPress={activeQR}>
-              <Text>Click to Scan !</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
         {scanResult && result && (
           <Fragment>
             <Text>Result !</Text>
@@ -69,27 +74,37 @@ const Scanner: React.FC = () => {
             ref={scanner}
             onRead={onSuccess}
             topContent={
-              <Text>
-                Go to <Text>wikipedia.org/wiki/QR_code</Text> on your computer
-                and scan the QR code to test.
+              <Text color="blueSapphire">
+                Vui lòng đặt mã QR ở giữa khung để quét mã QR
               </Text>
             }
+            customMarker={<Icon iconName="scanner" size={250} />}
             bottomContent={
-              <View>
-                <TouchableOpacity onPress={() => scanner.current?.reactivate()}>
-                  <Text>OK. Got it!</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => setScan(false)}>
-                  <Text>Stop Scan</Text>
-                </TouchableOpacity>
-              </View>
+              <Wrapper>
+                <Button variant="primary" handlePress={scanAgain}>
+                  Quét lại
+                </Button>
+                <Wrapper mTop={24}>
+                  <Button variant="primary" handlePress={handleContinue}>
+                    Tiếp tục
+                  </Button>
+                </Wrapper>
+                <Wrapper mTop={24}>
+                  <Button variant="secondary" handlePress={handleBack}>
+                    Trở về
+                  </Button>
+                </Wrapper>
+              </Wrapper>
             }
           />
         )}
       </Fragment>
-    </View>
+    </Container>
   );
 };
 
 export default Scanner;
+
+const Container = styled.SafeAreaView`
+  flex: 1;
+`;
