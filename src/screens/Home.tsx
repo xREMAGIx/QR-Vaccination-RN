@@ -14,6 +14,7 @@ type ItemData = {
   title: string;
   screen: string;
   iconSize?: number;
+  nav: string;
 };
 
 const pageData: ItemData[] = [
@@ -22,6 +23,7 @@ const pageData: ItemData[] = [
     title: 'Đăng ký tiêm vaccine',
     screen: 'Scanner',
     iconSize: 44,
+    nav: 'RegisterInfoNav',
   },
 ];
 
@@ -48,7 +50,7 @@ const Home: React.FC = () => {
                   iconName={item.iconName}
                   size={item.iconSize || 60}
                   handlePress={() => {
-                    navigation.navigate(item.screen);
+                    navigation.navigate(item.nav, {screen: item.screen});
                   }}>
                   {item.title}
                 </MenuItem>
