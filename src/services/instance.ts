@@ -24,6 +24,6 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => response,
   async (error: AxiosError): Promise<AxiosError> =>
-    Promise.reject(error.response ? error.response.data.errors : error),
+    Promise.reject(error.response ? error.response.data.error : error),
 );
 export default axiosInstance;

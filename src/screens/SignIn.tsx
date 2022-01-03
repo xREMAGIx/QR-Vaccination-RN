@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {Flex, Wrapper} from 'components/atoms/Wrapper';
 import {Text} from 'components/atoms/Text';
@@ -10,26 +10,53 @@ import {ScrollView} from 'react-native';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
 import {SigninSchema} from 'utils/schema';
-import {SignInFormData} from 'services/auth/types';
+import {LoginParams} from 'services/auth/types';
+import {getInfoAction, loginAction} from 'store/auth';
+import {useAppDispatch, useAppSelector} from 'store';
+import StorageService from 'services/storage';
 
 const SignIn: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
+
+  const {userData, error} = useAppSelector(state => state.auth);
+
   const [isSecurity, setIsSecurity] = useState(true);
 
-  const {reset, control, handleSubmit} = useForm<SignInFormData>({
+  const {reset, control, handleSubmit} = useForm<LoginParams>({
     resolver: yupResolver(SigninSchema),
   });
 
-  const handleSignin = async (data: SignInFormData) => {
-    console.log(data);
-    reset();
-    navigation.navigate('MainNav');
+  const handleSignin = async (data: LoginParams) => {
+    dispatch(loginAction(data))
+      .unwrap()
+      .then(async () => await dispatch(getInfoAction()));
   };
 
   const handleSignUp = () => {
     reset();
     navigation.navigate('SignUp');
   };
+
+  const handleAutoLogin = async () => {
+    const token = await StorageService.gettingStorage('token');
+    if (token) {
+      dispatch(getInfoAction());
+    }
+  };
+
+  useEffect(() => {
+    handleAutoLogin();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (userData) {
+      reset();
+      navigation.navigate('MainNav');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData]);
 
   return (
     <Container>
@@ -42,10 +69,10 @@ const SignIn: React.FC = () => {
         <Wrapper mTop={16}>
           <Controller
             control={control}
-            name="username"
+            name="phone"
             render={({field: {onChange, value}, fieldState: {error}}) => (
               <Textfield
-                label="Tên đăng nhập"
+                label="Số điện thoại"
                 colorLabel="blueSapphire"
                 borderColor="blueSapphire"
                 handleChange={onChange}
@@ -79,6 +106,11 @@ const SignIn: React.FC = () => {
             defaultValue=""
           />
         </Wrapper>
+        {error && (
+          <Wrapper mTop={24}>
+            <Text color="engineering">{error}</Text>
+          </Wrapper>
+        )}
         <Wrapper mTop={32}>
           <Flex>
             <Flex flexNum={1}>

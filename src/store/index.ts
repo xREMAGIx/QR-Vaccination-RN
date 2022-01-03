@@ -5,8 +5,11 @@ import {
   configureStore,
 } from '@reduxjs/toolkit';
 import {createSelectorHook, useDispatch} from 'react-redux';
+import authReducer from './auth';
 
-const combinedReducer = combineReducers({});
+const combinedReducer = combineReducers({
+  auth: authReducer,
+});
 
 const rootReducer = ($state: CombinedState<any>, action: AnyAction) => {
   if (action.type === 'authReducer/resetStore') {

@@ -8,11 +8,17 @@ import {Text} from 'components/atoms/Text';
 import {Wrapper} from 'components/atoms/Wrapper';
 import {Button} from 'components/atoms/Button';
 import {useNavigation} from '@react-navigation/native';
+import {useAppDispatch, useAppSelector} from 'store';
+import {logoutAction} from 'store/auth';
 
 const User: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
 
+  const {userData} = useAppSelector(state => state.auth);
+
   const handleSignOut = () => {
+    dispatch(logoutAction());
     navigation.navigate('SignIn');
   };
 
@@ -23,35 +29,35 @@ const User: React.FC = () => {
       </HeadBar>
       <ScrollView>
         <QRContainer>
-          <QRCode size={250} value="http://awesome.link.qr" />
+          <QRCode size={250} value={userData?._id} />
         </QRContainer>
         <InfoContainer>
           <Text color="blueSapphire" fw="medium">
             Họ và tên
           </Text>
           <Wrapper mTop={4}>
-            <Text color="raisinBlack">Nguyễn Văn A</Text>
+            <Text color="raisinBlack">{userData?.fullName}</Text>
           </Wrapper>
           <Line />
           <Text color="blueSapphire" fw="medium">
             Số điện thoại
           </Text>
           <Wrapper mTop={4}>
-            <Text color="raisinBlack">0912345678</Text>
+            <Text color="raisinBlack">{userData?.phone}</Text>
           </Wrapper>
           <Line />
           <Text color="blueSapphire" fw="medium">
             Giới tính
           </Text>
           <Wrapper mTop={4}>
-            <Text color="raisinBlack">Nam</Text>
+            <Text color="raisinBlack">{userData?.gender}</Text>
           </Wrapper>
           <Line />
           <Text color="blueSapphire" fw="medium">
             Số CMND/CCCD
           </Text>
           <Wrapper mTop={4}>
-            <Text color="raisinBlack">123456879879</Text>
+            <Text color="raisinBlack">{userData?.identityInfo}</Text>
           </Wrapper>
 
           <Wrapper mTop={40}>

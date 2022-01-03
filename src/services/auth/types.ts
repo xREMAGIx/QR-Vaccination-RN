@@ -1,13 +1,26 @@
-export type SignInFormData = {
-  username: string;
+export type LoginParams = {
+  phone: string;
   password: string;
 };
 
-export type SignUpFormData = {
-  username: string;
-  phone: string;
+export type RegisterParams = {
+  fullName: string;
   password: string;
-  confirmPassword: string;
-  dob: string;
-  identity: string;
+  dateOfBirth: string;
+  identityInfo: string;
+  phone: string;
+  gender: string;
+};
+
+export type UserData = {
+  _id: string;
+  fullName: string;
+  dateOfBirth: string;
+  identityInfo: string;
+  phone: string;
+  gender: string;
+  role: string;
+  createdAt: string;
+  __v: number;
+  id: string;
 };
