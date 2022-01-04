@@ -11,6 +11,7 @@ import arrowPrevBlack from 'assets/icons/ic_arrow_prev-black.png';
 import arrowPrevWhite from 'assets/icons/ic_arrow_prev-white.png';
 import lockDavysGrey from 'assets/icons/ic_lock-davysGrey.png';
 import scanner from 'assets/icons/ic_scanner.png';
+import registration from 'assets/icons/ic_registration.png';
 
 export const IconList = {
   qr,
@@ -24,6 +25,7 @@ export const IconList = {
   arrowPrevWhite,
   lockDavysGrey,
   scanner,
+  registration,
 };
 
 export type IconName = keyof typeof IconList;

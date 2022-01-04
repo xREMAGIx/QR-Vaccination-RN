@@ -2,7 +2,7 @@ import MainNav from 'navigators/MainNav';
 import {RegisterInfoNav} from 'navigators/RegisterInfoNav';
 import {RegistrationNav} from 'navigators/RegistrationNav';
 import Components from 'screens/Components';
-import Home from 'screens/Home';
+import Registrations from 'screens/Registrations';
 import Scanner from 'screens/Scanner';
 import SignIn from 'screens/SignIn';
 import SignUp from 'screens/SignUp';
@@ -14,8 +14,8 @@ export type Route = {
 
 const routes = [
   {
-    name: 'Home',
-    page: Home,
+    name: 'Registrations',
+    page: Registrations,
   },
   {
     name: 'Scanner',

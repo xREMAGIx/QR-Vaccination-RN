@@ -47,6 +47,13 @@ const User: React.FC = () => {
           </Wrapper>
           <Line />
           <Text color="blueSapphire" fw="medium">
+            Ngày sinh
+          </Text>
+          <Wrapper mTop={4}>
+            <Text color="raisinBlack">{userData?.dateOfBirth}</Text>
+          </Wrapper>
+          <Line />
+          <Text color="blueSapphire" fw="medium">
             Giới tính
           </Text>
           <Wrapper mTop={4}>

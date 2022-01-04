@@ -24,7 +24,7 @@ const CompleteRegister: React.FC = () => {
   };
 
   const handleBackToHome = () => {
-    navigation.navigate('MainNav');
+    navigation.navigate('MainNav', {screen: 'Home'});
   };
 
   return (

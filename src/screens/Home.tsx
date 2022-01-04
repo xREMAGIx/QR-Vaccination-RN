@@ -27,6 +27,14 @@ const pageData: ItemData[] = [
     nav: 'RegisterInfoNav',
     case: 'register',
   },
+  {
+    iconName: 'registration',
+    title: 'Thông tin đăng ký tiêm vaccine',
+    screen: 'Registrations',
+    iconSize: 44,
+    nav: 'Registrations',
+    case: 'register',
+  },
 ];
 
 const menuItemWidth = Dimensions.get('window').width / 3 - 16;
@@ -52,10 +60,13 @@ const Home: React.FC = () => {
                   iconName={item.iconName}
                   size={item.iconSize || 60}
                   handlePress={() => {
-                    navigation.navigate(item.nav, {
-                      screen: item.screen,
-                      params: {case: item.case},
-                    });
+                    if (item.nav) {
+                      navigation.navigate(item.nav, {
+                        screen: item.screen,
+                        params: {case: item.case},
+                      });
+                    }
+                    navigation.navigate(item.screen, {case: item.case});
                   }}>
                   {item.title}
                 </MenuItem>

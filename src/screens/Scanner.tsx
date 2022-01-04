@@ -1,6 +1,6 @@
 import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import {Linking, ScrollView} from 'react-native';
+import {ActivityIndicator, Linking, ScrollView} from 'react-native';
 import {BarCodeReadEvent} from 'react-native-camera';
 import styled from 'styled-components/native';
 import {Icon} from 'components/atoms/Icon';
@@ -14,6 +14,9 @@ import {UserData} from 'services/auth/types';
 import {getUserService} from 'services/auth';
 import {RootStackParamsList} from './types';
 import {useAppSelector} from 'store';
+import {RegisterInfoData} from 'services/registration/types';
+import colors from 'variables/colors';
+import {getRegisterInfoService} from 'services/registration';
 
 type ScannerRouteProp = RouteProp<RootStackParamsList, 'ScannerParam'>;
 
@@ -35,6 +38,7 @@ const Scanner: React.FC = () => {
   const [vaccinationPlace, setVaccinationPlace] =
     useState<VaccinationPlaceData>();
   const [user, setUser] = useState<UserData>();
+  const [registration, setRegistration] = useState<RegisterInfoData>();
 
   const scanner = useRef<QRCodeScanner>();
 
@@ -83,12 +87,21 @@ const Scanner: React.FC = () => {
     setCode(qrCode);
     try {
       setLoading(true);
-      if (qrCode === 'place') {
-        const placeData = await getVaccinationPlaceService(qrId);
-        setVaccinationPlace(placeData);
-      } else if (qrCode === 'user') {
-        const userData = await getUserService(qrId);
-        setUser(userData);
+      switch (qrCode) {
+        case 'place':
+          const placeData = await getVaccinationPlaceService(qrId);
+          setVaccinationPlace(placeData);
+          break;
+        case 'user':
+          const userRes = await getUserService(qrId);
+          setUser(userRes);
+          break;
+        case 'registration':
+          const registrationRes = await getRegisterInfoService(qrId);
+          setRegistration(registrationRes);
+          break;
+        default:
+          break;
       }
     } catch (error) {
       console.log(error);
@@ -127,32 +140,141 @@ const Scanner: React.FC = () => {
               </Wrapper>
               {(() => {
                 if (loading) {
-                  return <Text>Loading...</Text>;
-                }
-                if (code === 'place') {
                   return (
-                    <Wrapper mTop={12}>
-                      <Text>Địa chỉ: {vaccinationPlace?.address}</Text>
-                    </Wrapper>
+                    <ActivityIndicator
+                      size="small"
+                      color={colors.blueSapphire}
+                    />
                   );
                 }
-                if (code === 'user') {
-                  return (
-                    <>
+                switch (code) {
+                  case 'place': {
+                    return (
                       <Wrapper mTop={12}>
-                        <Text>Họ và tên: {user?.fullName}</Text>
+                        <Text>
+                          <Text color="blueSapphire">Địa chỉ:</Text>{' '}
+                          {vaccinationPlace?.address}
+                        </Text>
                       </Wrapper>
-                      <Wrapper mTop={12}>
-                        <Text>Số điện thoại: {user?.phone}</Text>
-                      </Wrapper>
-                      <Wrapper mTop={12}>
-                        <Text>Giới tính: {user?.gender}</Text>
-                      </Wrapper>
-                      <Wrapper mTop={12}>
-                        <Text>Số CMND/CCCD: {user?.identityInfo}</Text>
-                      </Wrapper>
-                    </>
-                  );
+                    );
+                  }
+                  case 'user': {
+                    return (
+                      <>
+                        <Wrapper mTop={12}>
+                          <Text>
+                            <Text color="blueSapphire">Họ và tên:</Text>{' '}
+                            {user?.fullName}
+                          </Text>
+                        </Wrapper>
+                        <Wrapper mTop={12}>
+                          <Text>
+                            <Text color="blueSapphire">Số điện thoại:</Text>{' '}
+                            {user?.phone}
+                          </Text>
+                        </Wrapper>
+                        <Wrapper mTop={12}>
+                          <Text>
+                            <Text color="blueSapphire">Ngày sinh:</Text>{' '}
+                            {user?.dateOfBirth}
+                          </Text>
+                        </Wrapper>
+                        <Wrapper mTop={12}>
+                          <Text>
+                            <Text color="blueSapphire">Giới tính:</Text>{' '}
+                            {user?.gender}
+                          </Text>
+                        </Wrapper>
+                        <Wrapper mTop={12}>
+                          <Text>
+                            <Text color="blueSapphire">Số CMND/CCCD:</Text>{' '}
+                            {user?.identityInfo}
+                          </Text>
+                        </Wrapper>
+                        <Wrapper mTop={12}>
+                          <Text>
+                            <Text color="blueSapphire">Phân quyền:</Text>{' '}
+                            {user?.role}
+                          </Text>
+                        </Wrapper>
+                      </>
+                    );
+                  }
+                  case 'registration': {
+                    if (registration) {
+                      return (
+                        <>
+                          <Wrapper mTop={8}>
+                            <Text>
+                              <Text color="blueSapphire">
+                                Đăng ký tiêm mũi :
+                              </Text>{' '}
+                              {registration.typeOfRegister === 'firstVaccine'
+                                ? 'Mũi một'
+                                : 'Mũi hai'}
+                            </Text>
+                          </Wrapper>
+                          <Wrapper mTop={8}>
+                            <Text>
+                              <Text color="blueSapphire">Loại vaccine:</Text>{' '}
+                              {registration.vaccineRegister.label}
+                            </Text>
+                          </Wrapper>
+                          {!!registration.previousVaccine && (
+                            <Wrapper mTop={8}>
+                              <Text>
+                                <Text color="blueSapphire">
+                                  Loại vaccine mũi một:
+                                </Text>{' '}
+                                {registration.previousVaccine.label}
+                              </Text>
+                            </Wrapper>
+                          )}
+                          {!!registration.previousVaccineDate && (
+                            <Wrapper mTop={8}>
+                              <Text>
+                                <Text color="blueSapphire">
+                                  Ngày tiêm mũi một:
+                                </Text>{' '}
+                                {registration.previousVaccineDate}
+                              </Text>
+                            </Wrapper>
+                          )}
+                          <Wrapper mTop={8}>
+                            <Text>
+                              <Text color="blueSapphire">Tiền sử bệnh án:</Text>{' '}
+                              {registration.illnessHistory}
+                            </Text>
+                          </Wrapper>
+                          <Wrapper mTop={8}>
+                            <Text>
+                              <Text color="blueSapphire">
+                                Triệu chứng 14 ngày gần đây:
+                              </Text>{' '}
+                              {registration.recentSymptom}
+                            </Text>
+                          </Wrapper>
+                          <Wrapper mTop={8}>
+                            <Text>
+                              <Text color="blueSapphire">
+                                Có tiếp xúc với F0 trong 14 ngày vừa qua?:
+                              </Text>{' '}
+                              {registration.contactF0}
+                            </Text>
+                          </Wrapper>
+                          <Wrapper mTop={8}>
+                            <Text textTransfrom="capitalize">
+                              <Text color="blueSapphire">Tình trạng:</Text>{' '}
+                              {registration.status}
+                            </Text>
+                          </Wrapper>
+                        </>
+                      );
+                    }
+                    return null;
+                  }
+                  default:
+                    return null;
                 }
               })()}
               {!!routeCase && (
@@ -163,12 +285,14 @@ const Scanner: React.FC = () => {
                 </Wrapper>
               )}
               <Wrapper mTop={24}>
-                <Button variant="secondary" handlePress={scanAgain}>
+                <Button variant={'secondary'} handlePress={scanAgain}>
                   Quét lại
                 </Button>
               </Wrapper>
               <Wrapper mTop={16}>
-                <Button variant="secondary" handlePress={handleBack}>
+                <Button
+                  variant={routeCase ? 'secondary' : 'primary'}
+                  handlePress={handleBack}>
                   Trở về
                 </Button>
               </Wrapper>
