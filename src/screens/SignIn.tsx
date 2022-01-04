@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {Flex, Wrapper} from 'components/atoms/Wrapper';
 import {Text} from 'components/atoms/Text';
@@ -38,17 +38,19 @@ const SignIn: React.FC = () => {
     navigation.navigate('SignUp');
   };
 
-  const handleAutoLogin = async () => {
+  console.log(error);
+
+  const handleAutoLogin = useCallback(async () => {
     const token = await StorageService.gettingStorage('token');
+    console.log('token', token);
     if (token) {
       dispatch(getInfoAction());
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     handleAutoLogin();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleAutoLogin]);
 
   useEffect(() => {
     if (userData) {
@@ -72,6 +74,7 @@ const SignIn: React.FC = () => {
             name="phone"
             render={({field: {onChange, value}, fieldState: {error}}) => (
               <Textfield
+                keyboardType="phone-pad"
                 label="Số điện thoại"
                 colorLabel="blueSapphire"
                 borderColor="blueSapphire"
@@ -106,7 +109,7 @@ const SignIn: React.FC = () => {
             defaultValue=""
           />
         </Wrapper>
-        {error && (
+        {error && typeof error === 'string' && (
           <Wrapper mTop={24}>
             <Text color="engineering">{error}</Text>
           </Wrapper>

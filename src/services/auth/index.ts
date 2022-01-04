@@ -18,6 +18,11 @@ export const getInfoService = async (): Promise<UserData> => {
   return response.data.data;
 };
 
+export const getUserService = async (id: string): Promise<UserData> => {
+  const response = await axiosInstance.get(`user/${id}`);
+  return response.data.data;
+};
+
 export const logoutService = async (): Promise<UserData> => {
   const response = await axiosInstance.get('logout');
   return response.data.data;

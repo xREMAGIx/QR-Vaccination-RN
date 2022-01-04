@@ -15,6 +15,7 @@ type ItemData = {
   screen: string;
   iconSize?: number;
   nav: string;
+  case?: string;
 };
 
 const pageData: ItemData[] = [
@@ -24,6 +25,7 @@ const pageData: ItemData[] = [
     screen: 'Scanner',
     iconSize: 44,
     nav: 'RegisterInfoNav',
+    case: 'register',
   },
 ];
 
@@ -50,7 +52,10 @@ const Home: React.FC = () => {
                   iconName={item.iconName}
                   size={item.iconSize || 60}
                   handlePress={() => {
-                    navigation.navigate(item.nav, {screen: item.screen});
+                    navigation.navigate(item.nav, {
+                      screen: item.screen,
+                      params: {case: item.case},
+                    });
                   }}>
                   {item.title}
                 </MenuItem>

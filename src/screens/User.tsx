@@ -29,7 +29,7 @@ const User: React.FC = () => {
       </HeadBar>
       <ScrollView>
         <QRContainer>
-          <QRCode size={250} value={userData?._id} />
+          <QRCode size={250} value={`user-${userData?._id}`} />
         </QRContainer>
         <InfoContainer>
           <Text color="blueSapphire" fw="medium">

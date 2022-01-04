@@ -3,21 +3,32 @@ import styled from 'styled-components/native';
 import {HeadBar} from 'components/organisms/HeadBar';
 import colors from 'variables/colors';
 import {Wrapper} from 'components/atoms/Wrapper';
-import {useNavigation} from '@react-navigation/native';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {Textfield} from 'components/atoms/Textfield';
 import {InfoRegisterSchema} from 'utils/schema';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {InfoRegisterFormData} from 'services/registration/types';
 import {Button} from 'components/atoms/Button';
+import {RootStackParamsList} from './types';
+
+type InfoRegisterRouteProp = RouteProp<
+  RootStackParamsList,
+  'InfoRegisterParam'
+>;
 
 const InfoRegister: React.FC = () => {
   const navigation = useNavigation();
 
+  const route = useRoute<InfoRegisterRouteProp>();
+  const {user: userRoute} = route.params ?? {
+    user: undefined,
+  };
+
   const {reset, control, handleSubmit} = useForm<InfoRegisterFormData>({
     resolver: yupResolver(InfoRegisterSchema),
     defaultValues: {
-      name: '',
+      name: userRoute?.fullName || '',
     },
   });
 

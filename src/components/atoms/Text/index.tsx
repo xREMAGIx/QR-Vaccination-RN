@@ -25,7 +25,7 @@ export const Text: React.FC<Props> = ({numberOfLines, children, ...rest}) => {
 
 const CustomText = styled.Text<Props>`
   opacity: ${props => (props.opacity ? props.opacity : 1)};
-  color: ${props => colors[props.color || 'black']};
+  color: ${props => colors[props.color || 'raisinBlack']};
   text-transform: ${props => props.textTransfrom || 'none'};
   text-align: ${props => props.textAlign || 'left'};
   font-size: ${props => props.fs || 14}px;
