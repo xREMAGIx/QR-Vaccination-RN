@@ -38,11 +38,8 @@ const SignIn: React.FC = () => {
     navigation.navigate('SignUp');
   };
 
-  console.log(error);
-
   const handleAutoLogin = useCallback(async () => {
     const token = await StorageService.gettingStorage('token');
-    console.log('token', token);
     if (token) {
       dispatch(getInfoAction());
     }

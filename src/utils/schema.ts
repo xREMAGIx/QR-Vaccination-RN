@@ -31,7 +31,7 @@ export const SignupSchema = yup.object().shape({
 });
 
 export const InfoRegisterSchema = yup.object().shape({
-  name: yup.string().required('Vui lòng nhập tên đăng nhập'),
+  fullName: yup.string().required('Vui lòng nhập tên đăng nhập'),
   gender: yup.string().required('Vui lòng nhập mật khẩu'),
   phone: yup
     .string()
@@ -47,8 +47,10 @@ export const InfoRegisterSchema = yup.object().shape({
 });
 
 export const VaccineRegisterSchema = yup.object().shape({
-  vaccineRegister: yup.object(),
-  vaccineType: yup.object(),
+  vaccineRegister: yup
+    .object()
+    .required('Vui lòng chọn thông tin đăng ký tiêm mũi'),
+  vaccineType: yup.object().required('Vui lòng chọn loại vaccine'),
   firstVaccineType: yup.object(),
   firstVaccineTime: yup.string(),
 });

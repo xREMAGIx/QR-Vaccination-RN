@@ -7,10 +7,21 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {Text} from 'components/atoms/Text';
 import {Wrapper} from 'components/atoms/Wrapper';
 import {Button} from 'components/atoms/Button';
-import {useNavigation} from '@react-navigation/native';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {RootStackParamsList} from './types';
+
+type CompleteRegisterRouteProp = RouteProp<
+  RootStackParamsList,
+  'CompleteRegisterParam'
+>;
 
 const CompleteRegister: React.FC = () => {
   const navigation = useNavigation();
+
+  const route = useRoute<CompleteRegisterRouteProp>();
+  const {id: idRoute} = route.params ?? {
+    id: '',
+  };
 
   const handleBackToHome = () => {
     navigation.navigate('MainNav');
@@ -21,7 +32,7 @@ const CompleteRegister: React.FC = () => {
       <HeadBar withSafe>Đăng ký tiêm phòng</HeadBar>
       <ScrollView>
         <QRContainer>
-          <QRCode size={250} value="http://awesome.link.qr" />
+          <QRCode size={250} value={idRoute} />
         </QRContainer>
         <InfoContainer>
           <Text color="blueSapphire" textAlign="center">

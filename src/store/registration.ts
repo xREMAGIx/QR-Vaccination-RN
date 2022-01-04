@@ -1,31 +1,21 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {
-  getInfoService,
-  loginService,
-  logoutService,
-  registerService,
-} from 'services/registration';
-import {
-  LoginParams,
-  RegisterParams,
-  UserData,
-} from 'services/registration/types';
-import StorageService from 'services/storage';
+import {getVaccinesService} from 'services/vaccine';
+import {VaccineData} from 'services/vaccine/types';
 
 export type RegistrationState = {
-  id?: string;
+  error?: string;
+  vaccines?: VaccineData[];
 };
 
 const initialState: RegistrationState = {
-  id: undefined,
+  vaccines: undefined,
 };
 
-export const loginAction = createAsyncThunk<string, LoginParams>(
-  'registrationReducer/loginAction',
-  async (params: LoginParams, {rejectWithValue}) => {
+export const getVaccinesAction = createAsyncThunk<VaccineData[]>(
+  'registrationReducer/getVaccinesAction',
+  async (_, {rejectWithValue}) => {
     try {
-      const res = await loginService(params);
-      await StorageService.savingStorage('token', res);
+      const res = await getVaccinesService();
       return res;
     } catch (error) {
       return rejectWithValue(error);
@@ -38,18 +28,23 @@ export const registrationReducer = createSlice({
   initialState,
   reducers: {
     resetStore: () => {},
-    clearRegistrationErrors($state) {
+    clearError($state) {
       $state.error = undefined;
     },
   },
   extraReducers: builder => {
-    builder.addCase(loginAction.pending, $state => {
+    builder.addCase(getVaccinesAction.pending, $state => {
       $state.error = undefined;
+    });
+    builder.addCase(getVaccinesAction.fulfilled, ($state, action) => {
+      $state.vaccines = action.payload;
+    });
+    builder.addCase(getVaccinesAction.rejected, ($state, error) => {
+      $state.error = error.payload as string;
     });
   },
 });
 
-export const {resetStore, clearRegistrationErrors} =
-  registrationReducer.actions;
+export const {resetStore, clearError} = registrationReducer.actions;
 
 export default registrationReducer.reducer;

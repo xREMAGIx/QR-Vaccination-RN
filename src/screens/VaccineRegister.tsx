@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useEffect, useMemo} from 'react';
 import styled from 'styled-components/native';
 import {HeadBar} from 'components/organisms/HeadBar';
 import colors from 'variables/colors';
 import {Wrapper} from 'components/atoms/Wrapper';
-import {useNavigation} from '@react-navigation/native';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {Textfield} from 'components/atoms/Textfield';
 import {VaccineRegisterSchema} from 'utils/schema';
@@ -12,39 +12,57 @@ import {VaccineRegisterFormData} from 'services/registration/types';
 import {Button} from 'components/atoms/Button';
 import {Pulldown} from 'components/molecules/Pulldown';
 import {Text} from 'components/atoms/Text';
+import {RootStackParamsList} from './types';
+import {useAppDispatch, useAppSelector} from 'store';
+import {getVaccinesAction} from 'store/registration';
+import {createRegisterInfoService} from 'services/registration';
 
 const vaccineRegisterData = [
   {
-    value: 'first',
+    value: 'firstVaccine',
     label: 'Mũi một',
   },
   {
-    value: 'second',
+    value: 'secondVaccine',
     label: 'Mũi hai',
   },
 ];
 
-const vaccineTypeData = [
-  {
-    value: 'astra',
-    label: 'Astra Zeneca',
-  },
-  {
-    value: 'moderna',
-    label: 'Moderna',
-  },
-  {
-    value: 'pfizer',
-    label: 'Pfizer',
-  },
-];
+type VaccineRegisterRouteProp = RouteProp<
+  RootStackParamsList,
+  'VaccineRegisterParam'
+>;
 
 const VaccineRegister: React.FC = () => {
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+
+  const route = useRoute<VaccineRegisterRouteProp>();
+  const {medicalHistory, symptomRecent, contactRecent} = route.params ?? {
+    medicalHistory: '',
+    symptomRecent: '',
+    contactRecent: '',
+  };
+
+  const {userData} = useAppSelector(state => state.auth);
+  const {vaccines} = useAppSelector(state => state.registration);
+
+  const vaccineTypeData = useMemo(() => {
+    if (vaccines && vaccines.length > 0) {
+      return vaccines.map(item => ({
+        value: item._id,
+        label: item.label,
+      }));
+    }
+    return [];
+  }, [vaccines]);
 
   const {reset, control, handleSubmit} = useForm<VaccineRegisterFormData>({
     resolver: yupResolver(VaccineRegisterSchema),
     defaultValues: {
+      vaccineRegister: undefined,
+      vaccineType: undefined,
+      firstVaccineType: undefined,
       firstVaccineTime: '',
     },
   });
@@ -54,9 +72,32 @@ const VaccineRegister: React.FC = () => {
     navigation.goBack();
   };
 
-  const handleContinue = () => {
-    navigation.navigate('RegistrationNav', {screen: 'CompleteRegister'});
+  const handleContinue = async (data: VaccineRegisterFormData) => {
+    try {
+      const res = await createRegisterInfoService({
+        userId: userData?._id || '',
+        typeOfRegister: data.vaccineRegister.value,
+        vaccineRegisterId: data.vaccineType.value,
+        previousVaccineId: data.firstVaccineType?.value,
+        previousVaccineDate: data.firstVaccineTime,
+        illnessHistory: medicalHistory || '',
+        recentSymptom: symptomRecent || '',
+        contactF0: contactRecent || '',
+      });
+      navigation.navigate('RegistrationNav', {
+        screen: 'CompleteRegister',
+        params: {
+          id: res._id,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    dispatch(getVaccinesAction());
+  }, [dispatch]);
 
   return (
     <Container>

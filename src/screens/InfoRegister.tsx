@@ -28,7 +28,10 @@ const InfoRegister: React.FC = () => {
   const {reset, control, handleSubmit} = useForm<InfoRegisterFormData>({
     resolver: yupResolver(InfoRegisterSchema),
     defaultValues: {
-      name: userRoute?.fullName || '',
+      fullName: userRoute?.fullName || '',
+      gender: userRoute?.gender || '',
+      phone: userRoute?.phone || '',
+      identity: userRoute?.identityInfo || '',
     },
   });
 
@@ -37,8 +40,15 @@ const InfoRegister: React.FC = () => {
     navigation.goBack();
   };
 
-  const handleContinue = () => {
-    navigation.navigate('RegistrationNav', {screen: 'VaccineRegister'});
+  const handleContinue = (data: InfoRegisterFormData) => {
+    navigation.navigate('RegistrationNav', {
+      screen: 'VaccineRegister',
+      params: {
+        medicalHistory: data.medicalHistory,
+        symptomRecent: data.symptomRecent,
+        contactRecent: data.contactRecent,
+      },
+    });
   };
 
   return (
@@ -50,9 +60,10 @@ const InfoRegister: React.FC = () => {
         <Wrapper mTop={16}>
           <Controller
             control={control}
-            name="name"
+            name="fullName"
             render={({field: {onChange, value}, fieldState: {error}}) => (
               <Textfield
+                editable={false}
                 label="Họ và tên"
                 colorLabel="blueSapphire"
                 borderColor="blueSapphire"
@@ -69,6 +80,7 @@ const InfoRegister: React.FC = () => {
             name="gender"
             render={({field: {onChange, value}, fieldState: {error}}) => (
               <Textfield
+                editable={false}
                 label="Giới tính"
                 colorLabel="blueSapphire"
                 borderColor="blueSapphire"
@@ -85,6 +97,7 @@ const InfoRegister: React.FC = () => {
             name="phone"
             render={({field: {onChange, value}, fieldState: {error}}) => (
               <Textfield
+                editable={false}
                 label="Số điện thoại"
                 colorLabel="blueSapphire"
                 borderColor="blueSapphire"
@@ -101,6 +114,7 @@ const InfoRegister: React.FC = () => {
             name="identity"
             render={({field: {onChange, value}, fieldState: {error}}) => (
               <Textfield
+                editable={false}
                 label="Số CMND/CCCD"
                 colorLabel="blueSapphire"
                 borderColor="blueSapphire"
@@ -159,7 +173,7 @@ const InfoRegister: React.FC = () => {
             )}
           />
         </Wrapper>
-        <Wrapper mTop={40}>
+        <Wrapper mTop={40} mBottom={24}>
           <Button handlePress={handleSubmit(handleContinue)}>Tiếp tục</Button>
         </Wrapper>
       </ScrollContainer>

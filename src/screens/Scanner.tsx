@@ -1,6 +1,6 @@
 import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import {Linking, View, ScrollView} from 'react-native';
+import {Linking, ScrollView} from 'react-native';
 import {BarCodeReadEvent} from 'react-native-camera';
 import styled from 'styled-components/native';
 import {Icon} from 'components/atoms/Icon';

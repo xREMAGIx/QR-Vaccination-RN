@@ -59,7 +59,13 @@ const User: React.FC = () => {
           <Wrapper mTop={4}>
             <Text color="raisinBlack">{userData?.identityInfo}</Text>
           </Wrapper>
-
+          <Line />
+          <Text color="blueSapphire" fw="medium">
+            Phân quyền
+          </Text>
+          <Wrapper mTop={4}>
+            <Text color="raisinBlack">{userData?.role}</Text>
+          </Wrapper>
           <Wrapper mTop={40}>
             <Button variant="secondary" handlePress={handleSignOut}>
               Đăng xuất
